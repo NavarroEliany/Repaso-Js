@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Nombre y Apellido</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      margin: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Ingrese su nombre y apellido:</h2>
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="apellido" placeholder="Apellido">
+    <button onclick="mostrarNombreApellido()">Mostrar</button>
+  </div>
+
+  <script>
+    function mostrarNombreApellido() {
+      var nombre = document.getElementById("nombre").value;
+      var apellido = document.getElementById("apellido").value;
+
+      if (nombre && apellido) {
+        var nombreCompleto = nombre.toUpperCase() + " " + apellido.toUpperCase();
+        alert("Nombre completo en mayúsculas: " + nombreCompleto);
+      } else {
+        alert("Por favor ingrese ambos campos.");
+      }
+    }
+  </script>
+</body>
+</html>
