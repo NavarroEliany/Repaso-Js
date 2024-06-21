@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container{
+            height: 600px;
+            width: 400px;
+            border-radius: 20px;
+            border: 2px solid gray;
+            box-shadow: 0 0 10px gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .row{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 4px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h2><a href="../index.html">Volver atrás</a></h2>
+            <input type="number" id="caja1" placeholder="Ingresa un numero" oninput="habilitarCaja()">
+            <input type="number" id="caja2" placeholder="Ingrese un numero"  disabled>
+        </div>
+        <button onclick="enviar()">ENVIAR</button>
+        <button id="hid_limpiar " onclick="limpiar()" > LIMPIAR</button>  
+        <div id="resultado"></div>
+        <div id="print"></div>
+    </div>
+ 
+    <script>
+
+        function limpiar(){
+            document.getElementById("caja1").value = "";
+            document.getElementById("caja2").value = "";
+            document.getElementById("resultado").innerHTML = "";
+            document.getElementById("print").innerText = "";
+            document.getElementById("hid_limpiar").innerText = ""; //Ocultar el boton de limpiar
+        }
+
+        function habilitarCaja(){
+            let caja1Value = document.getElementById("caja1").value.trim();
+            let caja2Hab = document.getElementById("caja2");
+
+            if(caja1Value.length > 0 ){
+                caja2Hab.disabled = false;
+            }else{
+                caja2Hab.disabled = true;  
+            }
+
+        }
+
+        function enviar(){
+            let caja1 = document.getElementById("caja1").value.trim();
+            let caja2 = document.getElementById("caja2").value.trim();
+            if(caja1.length == 0 || caja2.length == 0){
+                Swal.fire({
+                    title : "Cajas de texto vacías",
+                    text: "Introduzca numeros en las cajas de texto",
+                    icon : "Error",
+                    showConfirmButton : false,
+                    timer: 3000
+                })
+                return;
+            }else if(isNaN(caja1) == true){ //IsNaN (No es un numero?)
+                Swal.fire({
+                    title: "Error",
+                    text: "Solo se permiten numeros",
+                    icon:"error",
+                    showConfirmButton : false,
+                    timer:3000
+                })
+                return;
+            }else{
+                caja1 = parseInt(caja1,10); // para convertir en entero
+                caja2 = parseInt(caja2,10);
+                let resultado = document.getElementById("resultado");
+                resultado.innerHTML = ""; //Para limpiar contenido previo
+                let result;
+
+                for(let i = 0 ; i <= caja2; i++){
+                    result = caja1 * i;
+                    resultado.innerHTML += caja1+" * "+i+" = "+result+" <br>";
+                    if(result == 0){
+                        resultado.innerHTML += "Todo numero multiplicado por cero da cero <br>"
+                    }
+                }
+            }
+            // document.getElementById("hid_limpiar").hidden = false; //Mostrar boton de limpiar
+        }
+
+        
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tablas de Multiplicar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            margin: 10px 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #resultado {
+            margin-top: 20px;
+        }
+        .multiplicacion {
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="numero" placeholder="Ingrese un número" title="Ingrese el número para la tabla de multiplicar">
+        <input type="text" id="limite" placeholder="Ingrese el límite" title="Ingrese hasta qué número multiplicar" disabled>
+        <button id="calcular" disabled>Calcular</button>
+        <button id="limpiar">Limpiar</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        window.addEventListener('load', inicializar);
+
+        function inicializar() {
+            document.getElementById('numero').focus();
+            document.getElementById('numero').addEventListener('blur', validarNumero);
+            document.getElementById('limite').addEventListener('blur', validarLimite);
+            document.getElementById('calcular').addEventListener('click', calcularTabla);
+            document.getElementById('limpiar').addEventListener('click', limpiar);
+        }
+
+        function validarNumero() {
+            const numero = document.getElementById('numero');
+            if (numero.value === '') {
+                mostrarError('Debe ingresar un número');
+                numero.focus();
+            } else if (isNaN(numero.value)) {
+                mostrarError('Solo se aceptan números');
+                numero.value = '';
+                numero.focus();
+            } else {
+                document.getElementById('limite').disabled = false;
+                document.getElementById('limite').focus();
+            }
+        }
+
+        function validarLimite() {
+            const limite = document.getElementById('limite');
+            if (limite.value === '') {
+                mostrarError('Debe ingresar un límite');
+                limite.focus();
+            } else if (isNaN(limite.value)) {
+                mostrarError('Solo se aceptan números');
+                limite.value = '';
+                limite.focus();
+            } else {
+                document.getElementById('calcular').disabled = false;
+            }
+        }
+
+        function mostrarError(mensaje) {
+            const error = document.createElement('div');
+            error.textContent = mensaje;
+            error.style.color = 'red';
+            error.style.marginBottom = '10px';
+            document.querySelector('.container').insertBefore(error, document.getElementById('resultado'));
+            setTimeout(() => error.remove(), 3000);
+        }
+
+        function calcularTabla() {
+            const numero = parseInt(document.getElementById('numero').value);
+            const limite = parseInt(document.getElementById('limite').value);
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = `<h3>Tabla de multiplicar del ${numero}</h3>`;
+            resultado.innerHTML += `<p class="multiplicacion">Todo número multiplicado por 0 dará 0</p>`;
+            for (let i = 1; i <= limite; i++) {
+                resultado.innerHTML += `<p class="multiplicacion">${numero} x ${i} = ${numero * i}</p>`;
+            }
+            document.getElementById('numero').disabled = true;
+            document.getElementById('limite').disabled = true;
+            document.getElementById('calcular').disabled = true;
+        }
+
+        function limpiar() {
+            document.getElementById('numero').value = '';
+            document.getElementById('limite').value = '';
+            document.getElementById('resultado').innerHTML = '';
+            document.getElementById('numero').disabled = false;
+            document.getElementById('limite').disabled = true;
+            document.getElementById('calcular').disabled = true;
+            document.getElementById('numero').focus();
+        }
+    </script>
+</body>
+</html>

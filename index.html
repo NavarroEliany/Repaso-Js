@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Nombre Completo</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            margin: 10px 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .error {
+            border: 2px solid red;
+        }
+        #resultado, #conteo {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="primerNombre" placeholder="Primer Nombre">
+        <input type="text" id="segundoNombre" placeholder="Segundo Nombre">
+        <input type="text" id="primerApellido" placeholder="Primer Apellido">
+        <input type="text" id="segundoApellido" placeholder="Segundo Apellido">
+        <button onclick="enviar()">Enviar</button>
+        <button onclick="limpiar()">Limpiar</button>
+        <div id="resultado"></div>
+        <div id="conteo"></div>
+    </div>
+
+    <script>
+        function validarCampo(campo) {
+            if (campo.value.length < 5) {
+                campo.classList.add('error');
+                return false;
+            }
+            campo.classList.remove('error');
+            return true;
+        }
+
+        function enviar() {
+            const primerNombre = document.getElementById('primerNombre');
+            const segundoNombre = document.getElementById('segundoNombre');
+            const primerApellido = document.getElementById('primerApellido');
+            const segundoApellido = document.getElementById('segundoApellido');
+
+            if (!validarCampo(primerNombre) || !validarCampo(segundoNombre) || 
+                !validarCampo(primerApellido) || !validarCampo(segundoApellido)) {
+                alert("Todos los campos deben tener al menos 5 caracteres.");
+                return;
+            }
+
+            if (primerNombre.value.trim() === '' || primerApellido.value.trim() === '') {
+                alert("Debe haber al menos un nombre y un apellido.");
+                return;
+            }
+
+            const nombreCompleto = `${primerNombre.value} ${segundoNombre.value} ${primerApellido.value} ${segundoApellido.value}`;
+            
+            Swal.fire({
+                title: 'Nombre Completo',
+                text: nombreCompleto.toUpperCase(),
+                icon: 'info'
+            });
+
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = nombreCompleto.split(' ').map(palabra => 
+                palabra.split('').join('<br>')
+            ).join('<br><br>');
+
+            const conteo = document.getElementById('conteo');
+            const totalLetras = nombreCompleto.replace(/\s/g, '').length;
+            conteo.textContent = `Total de letras: ${totalLetras}`;
+        }
+
+        function limpiar() {
+            document.getElementById('primerNombre').value = '';
+            document.getElementById('segundoNombre').value = '';
+            document.getElementById('primerApellido').value = '';
+            document.getElementById('segundoApellido').value = '';
+            document.getElementById('resultado').innerHTML = '';
+            document.getElementById('conteo').textContent = '';
+            document.querySelectorAll('input').forEach(input => input.classList.remove('error'));
+        }
+    </script>
+</body>
+</html>

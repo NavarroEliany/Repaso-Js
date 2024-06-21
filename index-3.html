@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Números</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            margin: 10px 0;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #resultados {
+            margin-top: 20px;
+        }
+        .resultado {
+            margin: 5px 0;
+        }
+        #mensaje-final {
+            margin-top: 10px;
+            padding: 10px;
+            border: 2px solid #4CAF50;
+            background-color: #E8F5E9;
+            color: #1B5E20;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="numero" placeholder="Ingrese un número">
+        <button id="calcular">Calcular</button>
+        <div id="resultados">
+            <p class="resultado" id="cantidad">Cantidad de números: 0</p>
+            <p class="resultado" id="suma">Suma: 0</p>
+            <p class="resultado" id="resta">Resta: 0</p>
+            <p class="resultado" id="multiplicacion">Multiplicación: 1</p>
+            <p class="resultado" id="promedio">Promedio: 0</p>
+        </div>
+        <div id="mensaje-final"></div>
+    </div>
+
+    <script>
+        let numeros = [];
+        let cantidad = 0;
+        let suma = 0;
+        let resta = 0;
+        let multiplicacion = 1;
+        let promedio = 0;
+
+        window.addEventListener('load', inicializar);
+
+        function inicializar() {
+            document.getElementById('numero').focus();
+            document.getElementById('calcular').addEventListener('click', calcular);
+            document.getElementById('numero').value = prompt("Ingrese un número");
+        }
+
+        function calcular() {
+            const input = document.getElementById('numero');
+            const numero = input.value.trim();
+
+            if (numero === '') {
+                mostrarError('Por favor, ingrese un número');
+                return;
+            }
+
+            if (!/^[1-9]$/.test(numero)) {
+                mostrarError('Solo se permiten números del 1 al 9');
+                input.value = '';
+                return;
+            }
+
+            const num = parseInt(numero);
+            numeros.push(num);
+            cantidad++;
+            suma += num;
+            resta = cantidad === 1 ? num : resta - num;
+            multiplicacion *= num;
+            promedio = suma / cantidad;
+
+            actualizarResultados();
+
+            if (cantidad >= 5) {
+                mostrarMensajeFinal();
+            }
+
+            input.value = '';
+            input.focus();
+        }
+
+        function actualizarResultados() {
+            document.getElementById('cantidad').textContent = `Cantidad de números: ${cantidad}`;
+            document.getElementById('suma').textContent = `Suma: ${suma}`;
+            document.getElementById('resta').textContent = `Resta: ${resta}`;
+            document.getElementById('multiplicacion').textContent = `Multiplicación: ${multiplicacion}`;
+            document.getElementById('promedio').textContent = `Promedio: ${promedio.toFixed(2)}`;
+        }
+
+        function mostrarError(mensaje) {
+            const error = document.createElement('div');
+            error.textContent = mensaje;
+            error.style.color = 'red';
+            error.style.marginBottom = '10px';
+            document.querySelector('.container').insertBefore(error, document.getElementById('resultados'));
+            setTimeout(() => error.remove(), 2000);
+        }
+
+        function mostrarMensajeFinal() {
+            const mensajeFinal = document.getElementById('mensaje-final');
+            mensajeFinal.textContent = '¡Felicidades! Has ingresado 5 o más números.';
+            mensajeFinal.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

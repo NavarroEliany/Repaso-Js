@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .container{
+            height: 600px;
+            width: 500px;
+            background-color: rgb(231, 253, 253);
+            border-radius: 20px;
+            border: 2px solid black;
+            padding: 20px;
+
+        }
+        .row{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <input type="number" placeholder="Ingresa numeros" id="numbers">
+            <button onclick="enviar()" >CALCULAR</button>
+            <button id="limpiar" onclick="limpiar()" >LIMPIAR</button>
+        </div>
+        <label for="">Cantidad de numeros : </label>
+        <div id="cantNumeros"></div><br>
+        <label for="">Suma</label>
+        <div id="suma"></div><br>
+        <label for="">Resta</label>
+        <div id="resta"></div><br>
+        <label for="">Multiplicación</label>
+        <div id="multiplicacion"></div><br>
+        <label for="">Promedio</label>
+        <div id="promedio"></div>
+    </div>
+
+    <script>
+        function limpiar(){
+            document.getElementById("numbers").value = "";
+            document.getElementById("cantNumeros").innerText = "";
+            document.getElementById("suma").innerText = "";
+            document.getElementById("resta").innerText = "";
+            document.getElementById("multiplicacion").innerText = "";
+            document.getElementById("promedio").innerText = "";
+
+        }
+
+        function enviar(){ 
+            let number  = document.getElementById("numbers").value.trim();
+            if(number.length == 0){
+                Swal.fire({
+                    title : "Caja de texto vacía",
+                    text : "Ingrese numeros",
+                    icon: "error",
+                    showConfirmButton : false,
+                    timer : 2000
+                })
+                return;
+            }else if(isNan(number)){
+                Swal.fire({
+                    title : "Carácteres no válidos",
+                    text : "Ingrese solo numeros",
+                    icon: "error",
+                    showConfirmButton : false,
+                    timer : 2000
+                })
+                return;
+                
+            }else if(number.length >= 2){
+                Swal.fire({
+                    title : "Paso el límite",
+                    text : "Solo puede ingresar un numero",
+                    icon: "error",
+                    showConfirmButton : false,
+                    timer : 2000
+                })
+                return;
+            }
+            else{
+
+
+                //Cantidad de números
+                let cantNumber = document.getElementById("cantNumeros").innerText = number.length;
+                
+                //Suma
+                let suma=0;
+                for(let i =0 ; i <= number.length; i++){
+                    let numbers = parseInt(numbers,10); //Convierte cada elemento en entero y elimina espacios
+                    if(!isNaN(numbers)){
+                        suma += numbers;
+                    }
+                }
+                document.getElementById("suma").innerText = suma;
+
+
+            }
+
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
